@@ -1,30 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goku info</title>
+<meta charset="UTF-8">
+<title>Dragon Ball</title>
 </head>
 <body>
 
-    <h2>Selecciona que razas desea veer:</h2>
+<h2>Filtrar por raza:</h2>
 
-    <select>
-        <option>Saiyajin</option>
-        <option>Humanos</option>
-        <option>Namekiano</option>
-        <option>Raza de Freezer</option>
-        <option>Androide</option>
-        <option>Majin</option>
-        <option>Dios</option>
-        <option>Ángel</option>
-        <option>Raza Desconocida</option>
-        <option>Nucleico benigno</option>
-        <option>Nucleico</option>
-        <option>Raza Jiren</option>
-         <option>Malvado</option>
+<select id="raza" onchange="filtrar()">
+<option value="todos">Todos</option>
+<option value="Saiyajin">Saiyajin</option>
+<option value="Humano">Humano</option>
+<option value="Namekiano">Namekiano</option>
+<option value="Raza de Freezer">Raza de Freezer</option>
+<option value="Androide">Androide</option>
+<option value="Majin">Majin</option>
+<option value="Dios">Dios</option>
+<option value="Ángel">Ángel</option>
+<option value="Desconocido">Desconocido</option>
+<option value="Nucleico benigno">Nucleico benigno</option>
+<option value="Nucleico">Nucleico</option>
+<option value="Raza Jiren">Raza Jiren</option>
+<option value="Malvado">Malvado</option>
+</select>
 
-    </select>
+<table border="1">
+<thead>
+<tr>
+<th>#</th>
+<th>Imagen</th>
+<th>Nombre</th>
+<th>Raza</th>
+<th>Género</th>
+<th>KI Base</th>
+<th>KI Total</th>
+<th>Afiliación</th>
+</tr>
+</thead>
+
+<tbody id="tabla"></tbody>
+</table>
+
+<script>
+
+const personajes = [
+
+{nombre:"Goku", raza:"Saiyajin", genero:"Masculino", kiBase:"60.000.000", kiTotal:"90 septillones", afiliacion:"Cazador Z", img:""},
+{nombre:"Vegeta", raza:"Saiyajin", genero:"Masculino", kiBase:"54.000.000", kiTotal:"19,84 septillones", afiliacion:"Cazador Z", img:""},
+{nombre:"Gohan", raza:"Saiyajin", genero:"Masculino", kiBase:"45.000.000", kiTotal:"40 septillones", afiliacion:"Cazador Z", img:""},
+{nombre:"Gotenks", raza:"Saiyajin", genero:"Masculino", kiBase:"65.600.000", kiTotal:"34.8 mil millones", afiliacion:"Cazador Z", img:""},
+{nombre:"Bañador", raza:"Saiyajin", genero:"Masculino", kiBase:"50.000.000", kiTotal:"37,4 septillones", afiliacion:"Cazador Z", img:""},
+{nombre:"Bardock", raza:"Saiyajin", genero:"Masculino", kiBase:"450.000", kiTotal:"180.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Raditz", raza:"Saiyajin", genero:"Masculino", kiBase:"1.500", kiTotal:"1.500", afiliacion:"Ejército de Freezer", img:""},
+{nombre:"Broly", raza:"Saiyajin", genero:"Masculino", kiBase:"7 cuatrillones", kiTotal:"11,2 septillones", afiliacion:"Otro", img:""},
+{nombre:"Gogeta", raza:"Saiyajin", genero:"Masculino", kiBase:"250 mil millones", kiTotal:"15 septillones", afiliacion:"Cazador Z", img:""},
+{nombre:"Vegetto", raza:"Saiyajin", genero:"Masculino", kiBase:"180 mil millones", kiTotal:"10,8 septillones", afiliacion:"Cazador Z", img:""},
+
+{nombre:"Krillin", raza:"Humano", genero:"Masculino", kiBase:"1.000.000", kiTotal:"mil millones", afiliacion:"Cazador Z", img:""},
+{nombre:"Tenshin Han", raza:"Humano", genero:"Masculino", kiBase:"2.400.000", kiTotal:"80.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Yamcha", raza:"Humano", genero:"Masculino", kiBase:"1.980.000", kiTotal:"4.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Chi-Chi", raza:"Humano", genero:"Femenino", kiBase:"0", kiTotal:"0", afiliacion:"Cazador Z", img:""},
+{nombre:"Bulma", raza:"Humano", genero:"Femenino", kiBase:"0", kiTotal:"0", afiliacion:"Cazador Z", img:""},
+{nombre:"Maestro Roshi", raza:"Humano", genero:"Masculino", kiBase:"500.000", kiTotal:"350.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Lanzamiento", raza:"Humano", genero:"Femenino", kiBase:"0", kiTotal:"0", afiliacion:"Cazador Z", img:""},
+{nombre:"Señor Satán", raza:"Humano", genero:"Masculino", kiBase:"450", kiTotal:"5.000", afiliacion:"Otro", img:""},
+
+{nombre:"Piccolo", raza:"Namekiano", genero:"Masculino", kiBase:"2.000.000", kiTotal:"500.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Dende", raza:"Namekiano", genero:"Masculino", kiBase:"3.200", kiTotal:"3.200", afiliacion:"Cazador Z", img:""},
+{nombre:"Clavo", raza:"Namekiano", genero:"Masculino", kiBase:"42.000", kiTotal:"42.000", afiliacion:"Cazador Z", img:""},
+
+{nombre:"Freezer", raza:"Raza de Freezer", genero:"Masculino", kiBase:"530.000", kiTotal:"52,71 septillones", afiliacion:"Ejército de Freezer", img:""},
+{nombre:"Zarbón", raza:"Raza de Freezer", genero:"Masculino", kiBase:"20.000", kiTotal:"30.000", afiliacion:"Ejército de Freezer", img:""},
+{nombre:"Dodoria", raza:"Raza de Freezer", genero:"Masculino", kiBase:"18.000", kiTotal:"20.000", afiliacion:"Ejército de Freezer", img:""},
+{nombre:"Ginyu", raza:"Raza de Freezer", genero:"Masculino", kiBase:"9.000", kiTotal:"25.000", afiliacion:"Ejército de Freezer", img:""},
+
+{nombre:"Célula", raza:"Androide", genero:"Masculino", kiBase:"250.000.000", kiTotal:"5 mil millones", afiliacion:"Libre", img:""},
+{nombre:"Android 17", raza:"Androide", genero:"Masculino", kiBase:"320.000.000", kiTotal:"40 quintillones", afiliacion:"Villano", img:""},
+{nombre:"Android 16", raza:"Androide", genero:"Masculino", kiBase:"440.000.000", kiTotal:"440.000.000", afiliacion:"Villano", img:""},
+{nombre:"Android 18", raza:"Androide", genero:"Femenino", kiBase:"280.000.000", kiTotal:"300.000.000", afiliacion:"Cazador Z", img:""},
+{nombre:"Android 19", raza:"Androide", genero:"Masculino", kiBase:"122.000.000", kiTotal:"160.000.000", afiliacion:"Villano", img:""},
+{nombre:"Androide 20 (Dr. Gero)", raza:"Androide", genero:"Masculino", kiBase:"128.000.000", kiTotal:"158.100.000", afiliacion:"Villano", img:""},
+{nombre:"Android 13", raza:"Androide", genero:"Masculino", kiBase:"195.000.000", kiTotal:"562.500.000", afiliacion:"Villano", img:""},
+{nombre:"Android 14", raza:"Androide", genero:"Masculino", kiBase:"192.500.000", kiTotal:"192.500.000", afiliacion:"Villano", img:""},
+{nombre:"Android 15", raza:"Androide", genero:"Masculino", kiBase:"175.000.000", kiTotal:"175.000.000", afiliacion:"Villano", img:""},
+
+{nombre:"Babidi", raza:"Majin", genero:"Masculino", kiBase:"0", kiTotal:"0", afiliacion:"Villano", img:""},
+{nombre:"Majin Buu", raza:"Majin", genero:"Masculino", kiBase:"8 mil millones", kiTotal:"100 billones", afiliacion:"Villano", img:""},
+
+{nombre:"Beerus", raza:"Dios", genero:"Masculino", kiBase:"102 mil millones", kiTotal:"100 septillones", afiliacion:"Otro", img:""},
+{nombre:"Kibito-Shin", raza:"Dios", genero:"Masculino", kiBase:"3.2 mil millones", kiTotal:"3.2 mil millones", afiliacion:"Otro", img:""},
+{nombre:"Toppo", raza:"Dios", genero:"Masculino", kiBase:"99 cuatrillones", kiTotal:"7,5 sextillones", afiliacion:"Orgullo", img:""},
+{nombre:"Dyspo", raza:"Dios", genero:"Masculino", kiBase:"50 billones", kiTotal:"150 quintillones", afiliacion:"Orgullo", img:""},
+{nombre:"Vermoudh", raza:"Dios", genero:"Masculino", kiBase:"9,9 septillones", kiTotal:"100 septillones", afiliacion:"Orgullo", img:""},
+
+{nombre:"Whis", raza:"Ángel", genero:"Masculino", kiBase:"15 septillones", kiTotal:"110 septillones", afiliacion:"Asistente", img:""},
+{nombre:"Marcarita", raza:"Ángel", genero:"Femenino", kiBase:"10 septillones", kiTotal:"99,5 septillones", afiliacion:"Asistente", img:""},
+{nombre:"Gran Sacerdote", raza:"Ángel", genero:"Masculino", kiBase:"969 Googolplex", kiTotal:"969 Googolplex", afiliacion:"Otro", img:""},
+
+{nombre:"Zenón", raza:"Desconocido", genero:"Masculino", kiBase:"500 septillones", kiTotal:"500 septillones", afiliacion:"Otro", img:""},
+
+{nombre:"Jiren", raza:"Raza Jiren", genero:"Masculino", kiBase:"121 quintillones", kiTotal:"12,1 septillones", afiliacion:"Orgullo", img:""},
+
+{nombre:"Janemba", raza:"Malvado", genero:"Masculino", kiBase:"15 mil millones", kiTotal:"75 mil millones", afiliacion:"Otro", img:""},
+
+{nombre:"Kaio del norte (Kaito)", raza:"Nucleico benigno", genero:"Masculino", kiBase:"6.000", kiTotal:"6.000", afiliacion:"Otro", img:""},
+{nombre:"Kaio del Sur", raza:"Nucleico benigno", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kaio del Este", raza:"Nucleico benigno", genero:"Femenino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kaio del Oeste", raza:"Nucleico benigno", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Gran Kaio", raza:"Nucleico benigno", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+
+{nombre:"Kaio-shin del Este", raza:"Nucleico", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kaio-shin del Norte", raza:"Nucleico", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kaio-shin del Sur", raza:"Nucleico", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kaio-shin del Oeste", raza:"Nucleico", genero:"Femenino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Gran Kaio Shin", raza:"Nucleico", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""},
+{nombre:"Kibito", raza:"Nucleico", genero:"Masculino", kiBase:"Desconocido", kiTotal:"Desconocido", afiliacion:"Otro", img:""}
+
+];
+
+function mostrar(lista){
+    let tabla = document.getElementById("tabla");
+    tabla.innerHTML = "";
+    let contador = 1;
+
+    lista.forEach(p => {
+        tabla.innerHTML += `
+        <tr>
+            <td>${contador}</td>
+            <td><img src="${p.img}" width="50"></td>
+            <td>${p.nombre}</td>
+            <td>${p.raza}</td>
+            <td>${p.genero}</td>
+            <td>${p.kiBase}</td>
+            <td>${p.kiTotal}</td>
+            <td>${p.afiliacion}</td>
+        </tr>`;
+        contador++;
+    });
+}
+
+function filtrar(){
+    let raza = document.getElementById("raza").value;
+    if(raza === "todos"){
+        mostrar(personajes);
+    } else {
+        let filtrados = personajes.filter(p => p.raza === raza);
+        mostrar(filtrados);
+    }
+}
+
+mostrar(personajes);
+
+</script>
 
 </body>
 </html>
